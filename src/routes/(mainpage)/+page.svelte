@@ -18,6 +18,9 @@
 {#if navOpen && w < MOBILE_SCREEN}
 	<Navbar />
 {/if}
+<nav class="w-screen p-4 bg-foreground">
+	<p class="text-background font-sans">¡Esta página está en proceso! Estoy haciendo un poco siempre que pueda para que quede bien prolijo y poder darlo por terminado. Igualmente, el botoón de contacto funciona... ¡Usalo!</p>
+</nav>
 <section class="p-10 2xl:px-0 md:pt-24 relative max-w-[1280px] mx-auto">
 	{#if w < MOBILE_SCREEN}
 		<div class="absolute top-5 right-5">
