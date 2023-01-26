@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+
+@font-face {
+	font-family: Migra;
+	font-weight: bold;
+	src: url('/fonts/Migra-Extrabold.ttf');
+}
+
+@font-face {
+	font-family: Migra;
+	font-weight: bold;
+	font-style: italic;
+	src: url('/fonts/Migra-Italic-ExtraboldItalic.ttf');
+}
+
+@font-face {
+	font-family: Migra;
+	font-weight: light;
+	src: url('/fonts/Migra-Extralight.ttf');
+}
+
+@font-face {
+	font-family: Migra;
+	font-weight: light;
+	font-style: italic;
+	src: url('/fonts/Migra-Italic-ExtralightItalic.ttf');
+}
+
+@font-face {
+	font-family: Neue Montreal;
+	font-weight: normal;
+	src: url('/fonts/NeueMontreal.otf');
+}
+
+:root {
+	@apply font-serif bg-background text-foreground;
+}
+
+li {
+	@apply cursor-pointer hover:font-bold hover:font-serif transition;
+}
+
+.button {
+	@apply bg-foreground text-background select-none px-5 py-2 rounded-full text-center uppercase font-sans hover:scale-105 transition-transform active:scale-90 ease-in-out;
+
+}
+
+.button-border {
+	@extend .button;
+	@apply bg-transparent border border-foreground text-foreground ;
+}
+
+
+.title {
+	@apply text-5xl italic cursor-default;
+}
+
+.show {
+	@apply opacity-100 scale-100 translate-y-0 blur-0;
+}
+
+
+.hide {
+	@apply opacity-0 scale-75 translate-y-20 blur-sm duration-75;
+}
+
+@tailwind utilities;
