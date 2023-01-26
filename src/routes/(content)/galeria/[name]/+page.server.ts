@@ -7,7 +7,7 @@ export async function load({ params }: any) {
 	const render = await supabase.storage.from('renders/public').getPublicUrl(params.name).data;
 	const { data, error } = await supabase.from('comentarios').select().eq('render', params.name);
 
-	if (!render.publicUrl) {
+	if (pageError) {
 		throw pageError(404, {message: "El render no existe. ¡Volvete para atrás!"});
 	}
 
