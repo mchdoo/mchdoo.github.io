@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { supabase } from '$lib/supabaseClient';
+import { error as pageError } from '@sveltejs/kit';
 
 export const ssr = true;
 // async function loadRenders() {
@@ -49,6 +50,10 @@ export async function load({}) {
 		});
 	});
 	await allResults.shift();
+
+	if (pageError) {
+		throw error();
+	}
 
 	return {
 		gradient: gradient.publicUrl,

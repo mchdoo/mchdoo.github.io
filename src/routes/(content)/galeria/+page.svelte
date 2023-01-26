@@ -1,6 +1,6 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { error } from '@sveltejs/kit';
+	import { page } from '$app/stores';
 import { onMount } from 'svelte';
 	import type { PageServerData } from './$types';
 
@@ -36,6 +36,12 @@ import { onMount } from 'svelte';
 			estos son algunos de mis renders y dibujos. hacé click en alguno y comentá algo!
 		</p>
 	</div>
+
+	{#if $page.error}
+		<div class="flex justify-center text-red-400">
+			<p>Uy... dió error :( ({$page.error.message})</p>
+		</div>
+	{/if}
 
 	<div class="col-span-3 columns-1 md:columns-2 gap-2">
 		{#await data.allResults}
