@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabaseClient';
 	import Comentario from '$lib/components/Comentario.svelte';
+	import { page } from '$app/stores';
+	import { dataset_dev } from 'svelte/internal';
 
 	export let data: any;
 
@@ -31,8 +33,15 @@
 </svelte:head>
 
 <main class="grid grid-cols-3 gap-5">
+
+	{#if $page.error}
+	<p>{$page.error.message}</p>
+	{/if}
+
 	<section class="col-span-3 md:col-span-2">
+		{#if !$page.error}
 		<img class="render" src={data.render.publicUrl} alt={data.name} />
+		{/if}
 	</section>
 	<!-- <div class="h-10 aspect-square bg-[{swatches[1].getHex()}]" ></div> -->
 	<section class="col-span-3 md:col-span-1">
@@ -60,7 +69,9 @@
 				<textarea
 					bind:value={comment}
 					on:submit={() => handleComment()}
-					on:keydown={(e) => {e.key == 'return' ? () => handleComment() : null}}
+					on:keydown={(e) => {
+						e.key == 'return' ? () => handleComment() : null;
+					}}
 					placeholder="algo para decir?"
 					class="rounded p-3 h-fit placeholder:text-foreground/20 transition focus:ring-2 text-foreground/80 resize-y ring-foreground/30 outline-none bg-foreground/5 w-full"
 				/>
