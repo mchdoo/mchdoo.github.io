@@ -32,27 +32,20 @@ import { onMount } from 'svelte';
 <section class="grid-cols-1 grid md:grid-cols-4 flex-grow gap-5">
 	<div class="select-none" id="title">
 		<h2 class="title">La Galería</h2>
-		<p class="text-xl opacity-50 font-sans">
+		<p class="text-sm opacity-50 font-sans">
 			estos son algunos de mis renders y dibujos. hacé click en alguno y comentá algo!
 		</p>
 	</div>
 
-	{#if $page.error}
-		<div class="flex justify-center text-red-400">
-			<p>Uy... dió error :( ({$page.error.message})</p>
-		</div>
-	{/if}
-
 	<div class="col-span-3 columns-1 md:columns-2 gap-2">
-		{#await data.allResults}
+		{#await data.renders}
 			<p>...</p>
-		{:then allRenders}
-			{#each allRenders as render, index (index)}
+		{:then renders}
+			{#each renders as render, index (index)}
 				<a href="galeria/{render.name}">
 					<img
 						class="render max-h-[450px] w-full object-cover"
 						src={render.url}
-						bind:this={renders[index]}
 						alt="render {index}"
 					/>
 				</a>
