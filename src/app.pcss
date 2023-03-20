@@ -43,14 +43,12 @@ li {
 
 .button {
 	@apply bg-foreground text-background select-none px-5 py-2 rounded-full text-center uppercase font-sans hover:scale-105 transition-transform active:scale-90 ease-in-out;
-
 }
 
 .button-border {
 	@extend .button;
-	@apply bg-transparent border border-foreground text-foreground ;
+	@apply bg-transparent border border-foreground text-foreground;
 }
-
 
 .title {
 	@apply text-5xl italic cursor-default;
@@ -60,9 +58,28 @@ li {
 	@apply opacity-100 scale-100 translate-y-0 blur-0;
 }
 
-
 .hide {
 	@apply opacity-0 scale-75 translate-y-20 blur-sm duration-75;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  @apply bg-foreground/10;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-foreground/10 transition-colors;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-foreground/20;
 }
 
 @tailwind utilities;

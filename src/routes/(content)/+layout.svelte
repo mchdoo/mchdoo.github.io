@@ -2,11 +2,8 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import MenuIcon from '$lib/components/MenuIcon.svelte';
 	import GoBack from '$lib/components/GoBack.svelte';
-	import { supabase } from '$lib/supabaseClient';
 
 	let opened: boolean;
-
-	const { data: gradient } = supabase.storage.from('assets').getPublicUrl('gradient');
 </script>
 
 {#if opened}

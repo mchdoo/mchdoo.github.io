@@ -1,7 +1,5 @@
 import { supabase } from '$lib/supabaseClient';
 
-import {error as pageError} from "@sveltejs/kit"
-
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }: any) {
 	const render = await supabase.storage.from('renders/public').getPublicUrl(params.name).data;

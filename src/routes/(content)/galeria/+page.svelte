@@ -1,12 +1,19 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { page } from '$app/stores';
-import { onMount } from 'svelte';
+	import { slide } from 'svelte/transition';
+	import { onMount } from 'svelte';
 	import type { PageServerData } from './$types';
-
 	export let data: PageServerData;
 
-	let renders = [];
+	let hoveringRender: { name: string; active?: boolean } = {};
+	let mouse: { x: number; y: number } = {};
+
+	function handleCursor(e: MouseEvent) {
+		mouse = {
+			x: e.clientX,
+			y: e.clientY + window.scrollY
+		};
+	}
 
 	onMount(() => {
 		const observer = new IntersectionObserver((entries) => {
@@ -20,6 +27,8 @@ import { onMount } from 'svelte';
 					entry.target.classList.remove('show');
 				}
 			});
+			observer.unobserve(entry.target);
+			observer.disconnect();
 		});
 		document.querySelectorAll('.render').forEach((el) => observer.observe(el));
 	});
@@ -28,6 +37,8 @@ import { onMount } from 'svelte';
 <svelte:head>
 	<title>La Galería</title>
 </svelte:head>
+
+<svelte:body on:mousemove={(e) => handleCursor(e)} />
 
 <section class="grid-cols-1 grid md:grid-cols-4 flex-grow gap-5">
 	<div class="select-none" id="title">
@@ -39,21 +50,36 @@ import { onMount } from 'svelte';
 
 	<div class="col-span-3 columns-1 md:columns-2 gap-2">
 		{#await data.renders}
-			<p>...</p>
+			<div>
+				<p>Esperame dos segundos.</p>
+			</div>
 		{:then renders}
+			{#if hoveringRender.active}
+				<p
+					transition:slide
+					class="absolute pointer-events-none button font-serif text-foreground bg-background/50"
+					style="left:{mouse.x}px; top: {mouse.y}px; z-index: 9999;"
+				>
+					{hoveringRender.name}
+				</p>
+			{/if}
 			{#each renders as render, index (index)}
 				<a href="galeria/{render.name}">
 					<img
-						class="render max-h-[450px] w-full object-cover"
+						class="render relative z-10 max-h-[450px] w-full object-cover"
 						src={render.url}
 						alt="render {index}"
+						on:focus={() => {}}
+						on:mouseover={(e) => {
+							hoveringRender = { name: render.name, active: true };
+						}}
+						on:mouseleave={() => (hoveringRender.active = false)}
 					/>
 				</a>
 			{/each}
 		{/await}
 		{#if data.error}
-			<h1 class="font-bold text-amber-400 text-3xl">
-				Hubo un error!</h1>
+			<h1 class="font-bold text-amber-400 text-3xl">Hubo un error!</h1>
 			<p>{data.error}</p>
 		{/if}
 	</div>

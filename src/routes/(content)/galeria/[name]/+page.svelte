@@ -47,7 +47,7 @@
 	<section class="col-span-3 md:col-span-1">
 		<span class="flex gap-5">
 			<h1 class="title">“{name}”</h1>
-			{#if data.name.includes('drawing')}
+			{#if data.name.includes('drawing' || 'dibujo')}
 				<p class="mt-2 font-sans opacity-75 blur-sm hover:blur-0 transition cursor-default">
 					(hecho a mano)
 				</p>

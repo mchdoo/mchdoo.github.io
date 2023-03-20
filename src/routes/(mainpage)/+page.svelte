@@ -3,10 +3,17 @@
 	import { links } from '$lib/links';
 	import MenuIcon from '$lib/components/MenuIcon.svelte';
 	import { goto } from '$app/navigation';
+	import { slide } from 'svelte/transition';
+	import { onMount } from 'svelte';
 
 	let w: number;
 	const MOBILE_SCREEN = 768; /* TailwindCSS "md" breakpoint. */
 	let navOpen: boolean = false;
+	let alertOpen: boolean;
+
+	onMount(()=>{
+		alertOpen = true;
+	})
 </script>
 
 <svelte:window bind:innerWidth={w} />
@@ -18,9 +25,19 @@
 {#if navOpen && w < MOBILE_SCREEN}
 	<Navbar />
 {/if}
-<nav class="w-screen p-4 bg-foreground">
-	<p class="text-background font-sans">¡Esta página está en proceso! Estoy haciendo un poco siempre que pueda para que quede bien prolijo y poder darlo por terminado. Igualmente, el botoón de contacto funciona... ¡Usalo!</p>
-</nav>
+{#if alertOpen}
+	<!-- content here -->
+	<nav transition:slide class="w-full p-4 bg-foreground/25 flex items-center justify-between">
+		<p class="text-foreground font-sans">
+			<span class="text-amber-500">⚠</span> Esta página está en proceso! Andá a la <a
+				class="italic underline underline-offset-2"
+				href="/galeria">galería!</a
+			>
+		</p>
+		<button class="button" on:click={() => (alertOpen = false)}>entendido</button>
+	</nav>
+{/if}
+
 <section class="p-10 2xl:px-0 md:pt-24 relative max-w-[1280px] mx-auto">
 	{#if w < MOBILE_SCREEN}
 		<div class="absolute top-5 right-5">
@@ -29,7 +46,7 @@
 	{/if}
 	<img src="/logo.svg" class="invert" alt="Pedro Machado" />
 	<img
-		class="md:absolute right-12 top-10 animate-spin-slow w-full md:w-auto md:h-2/5 xl:h-1/2"
+		class="md:absolute right-16 top-10 animate-spin-slow w-full md:w-auto md:h-2/5 xl:h-1/2"
 		src="/gradient-star.png"
 		alt="gradient star"
 	/>
@@ -63,7 +80,9 @@
 				href={link.link}
 				target={link.targetBlank ? '_blank' : ''}
 				rel="noreferrer"
-				class="hover:scale-105 transition ease-in font-sans cursor-pointer hover:bg-foreground/10 p-3 rounded-sm {link.standout ? 'animate-bounce' : ''}"
+				class="hover:scale-105 transition ease-in font-sans cursor-pointer hover:bg-foreground/10 p-3 rounded-sm {link.standout
+					? 'animate-bounce'
+					: ''}"
 			>
 				<h4 class="uppercase">
 					{link.title}

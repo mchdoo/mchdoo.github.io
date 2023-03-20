@@ -1,18 +1,18 @@
-// @ts-nocheck
 import { supabase } from '$lib/supabaseClient';
+import type { FileObject } from 'node_modules/@supabase/storage-js/dist/module';
 
 export const ssr = true;
 
 export async function load({}) {
 
-	const { data }: {data: render[]} = await supabase.storage.from('renders').list('public');
+	const { data } = await supabase.storage.from('renders').list('public');
 
-	type render = {
+	type Render = {
 		url: string,
-		name: string
+		name?: string
 	}
 
-	const renders: render[] = [];
+	const renders: Render[] = [];
 
 	await data?.map((render) => {
 		const renderUrl = supabase.storage.from('renders/public').getPublicUrl(render.name).data.publicUrl

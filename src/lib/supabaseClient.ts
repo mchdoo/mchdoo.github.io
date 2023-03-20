@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/auth-helpers-sveltekit';
-
 // const supabaseUrl = import.meta.env.DEV
 // 	? import.meta.env.VITE_PUBLIC_SUPABASE_URL	
 // 	: import.meta.env.SVELTE_APP_PUBLIC_SUPABASE_URL;
