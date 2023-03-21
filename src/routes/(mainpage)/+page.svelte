@@ -29,7 +29,7 @@
 	<!-- content here -->
 	<nav transition:slide class="w-full p-4 bg-foreground/25 flex items-center justify-between">
 		<p class="text-foreground font-sans">
-			<span class="text-amber-500">⚠</span> Esta página está en proceso! Andá a la <a
+			<span class="text-amber-500">⚠</span> Todavía no terminé este portfolio, pero mientras podés visitar la igualmente inconclusa <a
 				class="italic underline underline-offset-2"
 				href="/galeria">galería!</a
 			>

@@ -4,18 +4,18 @@ import type { FileObject } from 'node_modules/@supabase/storage-js/dist/module';
 export const ssr = true;
 
 export async function load({}) {
-
 	const { data } = await supabase.storage.from('renders').list('public');
 
 	type Render = {
-		url: string,
-		name?: string
-	}
+		url: string;
+		name?: string;
+	};
 
 	const renders: Render[] = [];
 
 	await data?.map((render) => {
-		const renderUrl = supabase.storage.from('renders/public').getPublicUrl(render.name).data.publicUrl
+		const renderUrl = supabase.storage.from('renders/public').getPublicUrl(render.name)
+			.data.publicUrl;
 
 		renders.push({
 			url: renderUrl,
@@ -24,6 +24,6 @@ export async function load({}) {
 	});
 
 	return {
-		renders: renders ?? [],
+		renders: renders ?? []
 	};
 }
