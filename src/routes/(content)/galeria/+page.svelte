@@ -1,18 +1,25 @@
 <script lang="ts">
 	// @ts-nocheck
-	import { slide } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
+	import { spring } from 'svelte/motion';
 	import { onMount } from 'svelte';
 	import type { PageServerData } from './$types';
 	export let data: PageServerData;
 
 	let hoveringRender: { name: string; active?: boolean } = {};
-	let mouse: { x: number; y: number } = {};
+	let mouse = spring(
+		{ x: 50, y: 50 },
+		{
+			damping: 0.25,
+			stiffness: 0.1
+		}
+	);
 
 	function handleCursor(e: MouseEvent) {
-		mouse = {
+		mouse.set({
 			x: e.clientX,
 			y: e.clientY + window.scrollY
-		};
+		})
 	}
 
 	onMount(() => {
@@ -38,7 +45,7 @@
 	<title>La Galería</title>
 </svelte:head>
 
-<svelte:body on:mousemove={(e) => handleCursor(e)} />
+<svelte:body on:mousemove={(e) => handleCursor(e)}></svelte:body>
 
 <section class="grid-cols-1 grid md:grid-cols-4 flex-grow gap-5">
 	<div class="select-none" id="title">
@@ -56,9 +63,9 @@
 		{:then renders}
 			{#if hoveringRender.active}
 				<p
-					transition:slide
+					transition:fade
 					class="absolute pointer-events-none button font-serif text-foreground bg-background/50"
-					style="left:{mouse.x}px; top: {mouse.y}px; z-index: 9999;"
+					style="left:{$mouse.x}px; top: {$mouse.y}px; z-index: 9999;"
 				>
 					{hoveringRender.name}
 				</p>

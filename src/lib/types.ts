@@ -1,5 +1,5 @@
 export interface Comentario {
-	created_at: Date;
+	created_at?: Date;
 	contenido: string;
 	render: string;
 	autor: string;

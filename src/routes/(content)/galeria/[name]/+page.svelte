@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabaseClient';
+	import type {Comentario as TipoComentario} from '$lib/types';
 	import Comentario from '$lib/components/Comentario.svelte';
 	import { page } from '$app/stores';
-	import { dataset_dev } from 'svelte/internal';
 
 	export let data: any;
 
@@ -11,16 +11,18 @@
 	let comment: string;
 
 	async function handleComment() {
+
 		if (comment == undefined) {
 			alert('no');
 		}
 		const autor = await prompt('Cómo te llamas?');
-		const { error } = await supabase.from('comentarios').insert({
+
+		const com: TipoComentario = {
 			contenido: comment,
 			render: data.name,
-			autor: autor ? autor : 'Anónimo'
-		});
-		document.location.reload();
+			autor: autor || 'anónimo'
+		}
+		const { error } = await supabase.from('comentarios').insert(com);
 
 		if (error) {
 			alert(error.message);
@@ -56,7 +58,7 @@
 
 		<div class="font-sans mt-5 col-span-3">
 			<section class="grid gap-2 text-background/70 mb-2">
-				<p class="text-foreground opacity-50 uppercase text-xs text-center">— Comentarios —</p>
+				<p class="text-foreground opacity-50 uppercase text-xs text-left">Comentarios</p>
 				{#each data.comentarios as comentario}
 					<Comentario {comentario} />
 				{/each}

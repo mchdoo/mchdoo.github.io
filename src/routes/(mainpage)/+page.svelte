@@ -3,17 +3,19 @@
 	import { links } from '$lib/links';
 	import MenuIcon from '$lib/components/MenuIcon.svelte';
 	import { goto } from '$app/navigation';
-	import { slide } from 'svelte/transition';
+	import { slide, scale } from 'svelte/transition';
 	import { onMount } from 'svelte';
 
-	let w: number;
 	const MOBILE_SCREEN = 768; /* TailwindCSS "md" breakpoint. */
+	let w: number;
 	let navOpen: boolean = false;
 	let alertOpen: boolean;
+	let pageLoaded: boolean;
 
-	onMount(()=>{
+	onMount(() => {
 		alertOpen = true;
-	})
+		pageLoaded = true;
+	});
 </script>
 
 <svelte:window bind:innerWidth={w} />
@@ -25,14 +27,13 @@
 {#if navOpen && w < MOBILE_SCREEN}
 	<Navbar />
 {/if}
+
 {#if alertOpen}
-	<!-- content here -->
 	<nav transition:slide class="w-full p-4 bg-foreground/25 flex items-center justify-between">
 		<p class="text-foreground font-sans">
-			<span class="text-amber-500">⚠</span> Todavía no terminé este portfolio, pero mientras podés visitar la igualmente inconclusa <a
-				class="italic underline underline-offset-2"
-				href="/galeria">galería!</a
-			>
+			<span class="text-amber-500">⚠</span> Todavía no terminé este portfolio, pero mientras podés
+			visitar la igualmente inconclusa
+			<a class="italic underline underline-offset-2" href="/galeria">galería!</a>
 		</p>
 		<button class="button" on:click={() => (alertOpen = false)}>entendido</button>
 	</nav>
@@ -45,11 +46,14 @@
 		</div>
 	{/if}
 	<img src="/logo.svg" class="invert" alt="Pedro Machado" />
-	<img
-		class="md:absolute right-16 top-10 animate-spin-slow w-full md:w-auto md:h-2/5 xl:h-1/2"
-		src="/gradient-star.png"
-		alt="gradient star"
-	/>
+	{#if pageLoaded}
+		<img
+			transition:scale={{delay: 200}}
+			class="md:absolute right-16 top-10 animate-spin-slow w-full md:w-auto md:h-2/5 xl:h-1/2"
+			src="/gradient-star.png"
+			alt="gradient star"
+		/>
+	{/if}
 
 	<div class="col-span-4 flex items-center justify-between mb-5 md:my-5 select-none">
 		<h3 class="italic text-3xl md:text-7xl">artist, designer</h3>

@@ -6,7 +6,7 @@
 
 <div
 	transition:slide={{ easing: cubicInOut }}
-	class="bg-foreground w-screen h-fit p-2 grid grid-cols-2 md:grid-cols-4 gap-2 sticky"
+	class="bg-foreground w-full h-fit p-2 grid grid-cols-2 md:grid-cols-4 gap-2 sticky"
 >
 	{#each links as link, index}
 		<a
