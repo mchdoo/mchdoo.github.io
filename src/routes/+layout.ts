@@ -1,3 +1,3 @@
 import '../app.pcss';
 
-export const ssr = true;
+export const prerender = false;

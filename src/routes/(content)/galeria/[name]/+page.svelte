@@ -1,33 +1,38 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabaseClient';
-	import type {Comentario as TipoComentario} from '$lib/types';
+	import type { TipoComentario } from '$lib/types';
 	import Comentario from '$lib/components/Comentario.svelte';
 	import { page } from '$app/stores';
+	import { commentStore, prueba } from './store';
+	import type { PageData } from './$types';
 
-	export let data: any;
+	export let data: PageData;
 
 	const name = data.name.split('_')[0];
 
 	let comment: string;
 
+
 	async function handleComment() {
-
-		if (comment == undefined) {
-			alert('no');
-		}
-		const autor = await prompt('Cómo te llamas?');
-
-		const com: TipoComentario = {
+		const comentario: TipoComentario = {
 			contenido: comment,
 			render: data.name,
-			autor: autor || 'anónimo'
-		}
-		const { error } = await supabase.from('comentarios').insert(com);
+			autor: 'pedro',
+			created_at: new Date('today')
+		};
+
+		const { error } = await supabase.from('comentarios').insert(comentario);
 
 		if (error) {
 			alert(error.message);
 		}
+
+		comment = "";
 	}
+
+	prueba.set('Cargado')
+
+
 </script>
 
 <svelte:head>
@@ -36,13 +41,9 @@
 
 <main class="grid grid-cols-3 gap-5">
 
-	{#if $page.error}
-	<p>{$page.error.message}</p>
-	{/if}
-
 	<section class="col-span-3 md:col-span-2">
 		{#if !$page.error}
-		<img class="render" src={data.render.publicUrl} alt={data.name} />
+			<img class="render" src={data.render.publicUrl} alt={data.name} />
 		{/if}
 	</section>
 	<!-- <div class="h-10 aspect-square bg-[{swatches[1].getHex()}]" ></div> -->
@@ -59,10 +60,10 @@
 		<div class="font-sans mt-5 col-span-3">
 			<section class="grid gap-2 text-background/70 mb-2">
 				<p class="text-foreground opacity-50 uppercase text-xs text-left">Comentarios</p>
-				{#each data.comentarios as comentario}
+				{#each $commentStore as comentario}
 					<Comentario {comentario} />
 				{/each}
-				{#if !data.comentarios}
+				{#if !$commentStore}
 					<p class="text-center text-foreground opacity-20">nadie comentó todavía</p>
 				{/if}
 			</section>
@@ -84,10 +85,6 @@
 					→
 				</button>
 			</span>
-
-			{#if data.error}
-				<p>{data.error.message}</p>
-			{/if}
 		</div>
 	</section>
 </main>

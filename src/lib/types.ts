@@ -1,5 +1,6 @@
-export interface Comentario {
-	created_at?: Date;
+export interface TipoComentario {
+	id?: number;
+	created_at: Date;
 	contenido: string;
 	render: string;
 	autor: string;

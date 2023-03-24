@@ -61,11 +61,10 @@
 	</div>
 
 	{#if w < MOBILE_SCREEN}
-		<button
-			on:click={() => {
-				goto('/galeria');
-			}}
-			class="button w-full py-5">Ir a Galería →</button
+		<a
+			href="/galeria"
+			data-sveltekit-preload-data="hover"
+			class="button w-full py-5">Ir a Galería →</a
 		>
 		<button
 			on:click={() => {

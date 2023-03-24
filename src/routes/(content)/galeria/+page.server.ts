@@ -1,8 +1,6 @@
 import { supabase } from '$lib/supabaseClient';
 import type { FileObject } from 'node_modules/@supabase/storage-js/dist/module';
 
-export const ssr = true;
-
 export async function load({}) {
 	const { data } = await supabase.storage.from('renders').list('public');
 
