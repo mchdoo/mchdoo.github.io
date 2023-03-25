@@ -5,8 +5,10 @@
 	import type { PageServerData } from './$types';
 	export let data: PageServerData;
 	import { lazyLoad } from '$lib/utils/lazyLoad';
+	import { supabaseRealtimeInit } from '$lib/supabaseClient';
+	import { beforeNavigate } from '$app/navigation';
 
-	let hoveringRender: { name?: string; active?: boolean } = {};
+	let hoveringRender: { name?: string; active?: boolean } = {active: false};
 	let mouse = spring(
 		{ x: 0, y: 0 },
 		{
@@ -21,6 +23,12 @@
 			y: e.clientY + window.scrollY
 		});
 	}
+
+	supabaseRealtimeInit();
+
+	beforeNavigate((nav)=>{
+		setTimeout(()=>{nav}, 200)
+	})
 </script>
 
 <svelte:head>
@@ -29,8 +37,8 @@
 
 <svelte:body on:mousemove={(e) => handleCursor(e)} />
 
-<section class="grid-cols-1 grid md:grid-cols-4 flex-grow gap-5">
-	<div class="select-none sticky top-6" id="title">
+<section class="grid-cols-1 grid md:grid-cols-4 flex-grow gap-3 px-6 md:p-0">
+	<div class="select-none" id="title">
 		<h2 class="title">La Galería</h2>
 		<p class="text-sm opacity-50 font-sans">
 			estos son algunos de mis renders y dibujos. hacé click en alguno y comentá algo!
@@ -47,7 +55,7 @@
 		</p>
 	{/if}
 
-	<div class="col-span-3 columns-1 md:columns-2 gap-2">
+	<div class="col-span-3 columns-1 md:columns-2 gap-3">
 		{#await data.renders}
 			<div>
 				<p class="font-sans text-center uppercase animate-pulse">Cargando</p>
@@ -73,7 +81,7 @@
 
 <style lang="postcss" scoped>
 	.render {
-		@apply rounded-sm ease-out transition bg-foreground/20 duration-500 cursor-pointer mb-2 hover:ring ring-foreground/50 active:scale-90;
+		@apply rounded-sm ease-out transition bg-foreground/20 duration-500 cursor-pointer mb-3 hover:ring ring-foreground/50 active:scale-90;
 	}
 	img {
 		opacity: 0;

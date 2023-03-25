@@ -3,13 +3,15 @@
 	import type { TipoComentario } from '$lib/types';
 	import Comentario from '$lib/components/Comentario.svelte';
 	import { page } from '$app/stores';
-	import { commentStore, prueba } from './store';
+	import { commentStore } from '$lib/store';
 	import type { PageData } from './$types';
 	import Popup from '$lib/components/Popup.svelte';
 	import { slide } from 'svelte/transition';
+	import { beforeNavigate } from '$app/navigation';
+	export let data: PageData;
+
 
 	let isOpen = false;
-	export let data: PageData;
 
 	const name = data.name.split('_')[0];
 
@@ -32,22 +34,20 @@
 			const { error } = await supabase.from('comentarios').insert(comentario);
 		}
 	}
-
-	prueba.set('Cargado');
 </script>
 
 <svelte:head>
 	<title>"{name}" de Pedro Machado</title>
 </svelte:head>
 
-<main class="grid grid-cols-3 gap-5">
+<main class="grid grid-cols-3 gap-3">
 	<section class="col-span-3 md:col-span-2">
 		{#if !$page.error}
 			<img class="render sticky top-6" src={data.render.publicUrl} alt={data.name} />
 		{/if}
 	</section>
 	<!-- <div class="h-10 aspect-square bg-[{swatches[1].getHex()}]" ></div> -->
-	<section class="col-span-3 md:col-span-1">
+	<section class="col-span-3 mt-3 md:col-span-1 px-6 md:p-0">
 		<span class="flex gap-5">
 			<h1 class="title">“{name}”</h1>
 			{#if data.name.includes('drawing' || 'dibujo')}
@@ -61,18 +61,17 @@
 			<section class="grid gap-2 text-background/70 mb-2">
 				<p class="text-foreground opacity-50 uppercase text-xs text-left">Comentarios</p>
 				{#each $commentStore as comentario}
-					<Comentario {comentario} />
+					<Comentario autor={autor} {comentario} />
 				{/each}
 				{#if $commentStore.length === 0}
 					<p transition:slide={{duration: 200}} class="text-center text-foreground opacity-20">nadie comentó todavía</p>
 				{/if}
 			</section>
 
-			<form class="relative" on:submit|preventDefault={() => (isOpen = true)}>
+			<form class="relative" on:submit|preventDefault={() => handleComment()}>
 				<textarea
 					required
 					bind:value={contenidoComentario}
-					on:submit={() => handleComment()}
 					on:keydown={(e) => {
 						if (e.key === 'Enter' && !e.shiftKey) {
 							e.preventDefault()
@@ -95,8 +94,7 @@
 
 	<Popup {isOpen} onClose={() => (isOpen = false)}>
 		<h3 class="font-bold text-3xl mb-3">Antes de comentar</h3>
-		<hr class="opacity-10 mb-3" />
-		<form on:submit={() => handleComment()}>
+		<form on:submit|preventDefault={() => handleComment()}>
 			<label for="name" class="font-sans text-xs opacity-50 uppercase">Tu nombre</label>
 			<input
 				bind:value={autor}

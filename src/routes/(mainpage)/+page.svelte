@@ -2,7 +2,7 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { links } from '$lib/links';
 	import MenuIcon from '$lib/components/MenuIcon.svelte';
-	import { goto } from '$app/navigation';
+	import { beforeNavigate, goto } from '$app/navigation';
 	import { slide, scale } from 'svelte/transition';
 	import { onMount } from 'svelte';
 
@@ -16,6 +16,10 @@
 		alertOpen = true;
 		pageLoaded = true;
 	});
+
+	beforeNavigate((nav)=>{
+		setTimeout(()=>nav, 500)
+	})
 </script>
 
 <svelte:window bind:innerWidth={w} />
@@ -76,7 +80,6 @@
 	<section class="hidden md:grid grid-cols-2 md:grid-cols-4 gap-10 mt-10">
 		{#each links as link}
 			<a
-				data-sveltekit-preload-data="hover"
 				href={link.link}
 				target={link.targetBlank ? '_blank' : ''}
 				rel="noreferrer"

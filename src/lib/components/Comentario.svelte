@@ -4,16 +4,27 @@
 	import type { TipoComentario } from '$lib/types';
 	import { cubicOut } from 'svelte/easing';
 	import { fly, slide } from 'svelte/transition';
+	import Popup from './Popup.svelte';
 
+	export let autor: string;
 	export let comentario: TipoComentario;
+
+	let unable: boolean;
 
 	let hovering: boolean = false;
 
 	async function handleDelete() {
-		const { error } = await supabase
-			.from('comentarios')
-			.delete()
-			.eq('contenido', comentario.contenido);
+		if (comentario.autor !== autor) {
+			new Promise(() => {
+				unable = true
+				setTimeout(() => {
+					unable = false;
+				}, 2000);
+			});
+			return;
+		}
+
+		const { error } = await supabase.from('comentarios').delete().eq('id', comentario.id);
 
 		error ?? console.log(error);
 	}
@@ -24,11 +35,16 @@
 	on:focus={() => (hovering = true)}
 	on:mouseover={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
-	transition:slide={{duration: 200, easing: cubicOut}}
+	transition:slide={{ duration: 200, easing: cubicOut }}
 >
 	{#if hovering}
 		<!-- content here -->
-		<DeleteButton onConfirm={()=>handleDelete()} />
+		<DeleteButton onConfirm={() => handleDelete()} />
+	{/if}
+	{#if unable}
+		<Popup warn autoclose>
+			<p class="font-sans">No sos autor/a de este comentario!</p>
+		</Popup>
 	{/if}
 	<div class="mb-1 flex flex-col gap-1">
 		<div class="col-span-5 flex items-center gap-2">

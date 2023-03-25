@@ -1,5 +1,4 @@
 <script lang="ts">
-
 	import Navbar from '$lib/components/Navbar.svelte';
 	import MenuIcon from '$lib/components/MenuIcon.svelte';
 	import GoBack from '$lib/components/GoBack.svelte';
@@ -10,7 +9,7 @@
 {#if opened}
 	<Navbar />
 {/if}
-<main class="w-5/6 max-w-[1080px] mx-auto pb-12">
+<div class="container max-w-3xl mx-auto px-6">
 	<nav class="justify-between w-full items-center md:items-center inline-flex my-10">
 		<GoBack mode="duotone" />
 
@@ -19,5 +18,8 @@
 		</a>
 		<MenuIcon onClick={() => (opened = !opened)} active={opened} />
 	</nav>
+</div>
+
+<main class="container max-w-3xl mx-auto pb-12">
 	<slot />
 </main>
