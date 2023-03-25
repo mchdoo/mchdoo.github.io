@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import type { PageServerData } from './$types';
 	export let data: PageServerData;
+	import { lazyLoad } from '$lib/utils/lazyLoad';
 
 	let hoveringRender: { name?: string; active?: boolean } = {};
 	let mouse = spring(
@@ -26,7 +27,7 @@
 	<title>La Galería de Pedro Machado</title>
 </svelte:head>
 
-<svelte:body on:mousemove={(e) => handleCursor(e)}></svelte:body>
+<svelte:body on:mousemove={(e) => handleCursor(e)} />
 
 <section class="grid-cols-1 grid md:grid-cols-4 flex-grow gap-5">
 	<div class="select-none sticky top-6" id="title">
@@ -36,29 +37,30 @@
 		</p>
 	</div>
 
+	{#if hoveringRender.active}
+		<p
+			transition:fade
+			class="absolute pointer-events-none button font-serif text-foreground bg-background/50"
+			style="left:{$mouse.x}px; top: {$mouse.y}px; z-index: 9999;"
+		>
+			{hoveringRender.name}
+		</p>
+	{/if}
+
 	<div class="col-span-3 columns-1 md:columns-2 gap-2">
 		{#await data.renders}
 			<div>
-				<p>Esperame dos segundos.</p>
+				<p class="font-sans text-center uppercase animate-pulse">Cargando</p>
 			</div>
 		{:then renders}
-			{#if hoveringRender.active}
-				<p
-					transition:fade
-					class="absolute pointer-events-none button font-serif text-foreground bg-background/50"
-					style="left:{$mouse.x}px; top: {$mouse.y}px; z-index: 9999;"
-				>
-					{hoveringRender.name}
-				</p>
-			{/if}
 			{#each renders as render, index (index)}
 				<a href="galeria/{render.name}">
 					<img
-						class="render relative z-10 max-h-[450px] w-full object-cover"
-						src={render.url}
 						alt="render {index}"
+						class="render relative z-10 max-h-[450px] w-full object-cover"
+						use:lazyLoad={render.url}
 						on:focus={() => {}}
-						on:mouseover={(e) => {
+						on:mouseover={() => {
 							hoveringRender = { name: render.name, active: true };
 						}}
 						on:mouseleave={() => (hoveringRender.active = false)}
@@ -72,5 +74,9 @@
 <style lang="postcss" scoped>
 	.render {
 		@apply rounded-sm ease-out transition bg-foreground/20 duration-500 cursor-pointer mb-2 hover:ring ring-foreground/50 active:scale-90;
+	}
+	img {
+		opacity: 0;
+		transition: opacity 1s ease-in-out;
 	}
 </style>
