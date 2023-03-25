@@ -1,14 +1,13 @@
 <script lang="ts">
-	// @ts-nocheck
 	import { fade } from 'svelte/transition';
 	import { spring } from 'svelte/motion';
 	import { onMount } from 'svelte';
 	import type { PageServerData } from './$types';
 	export let data: PageServerData;
 
-	let hoveringRender: { name: string; active?: boolean } = {};
+	let hoveringRender: { name?: string; active?: boolean } = {};
 	let mouse = spring(
-		{ x: 50, y: 50 },
+		{ x: 0, y: 0 },
 		{
 			damping: 0.25,
 			stiffness: 0.1
@@ -19,36 +18,18 @@
 		mouse.set({
 			x: e.clientX,
 			y: e.clientY + window.scrollY
-		})
-	}
-
-	onMount(() => {
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach((entry) => {
-				if (entry.isIntersecting) {
-					console.log(entry.target);
-					entry.target.classList.add('show');
-					entry.target.classList.remove('hide');
-				} else {
-					entry.target.classList.add('hide');
-					entry.target.classList.remove('show');
-				}
-			});
-			observer.unobserve(entry.target);
-			observer.disconnect();
 		});
-		document.querySelectorAll('.render').forEach((el) => observer.observe(el));
-	});
+	}
 </script>
 
 <svelte:head>
-	<title>La Galería</title>
+	<title>La Galería de Pedro Machado</title>
 </svelte:head>
 
 <svelte:body on:mousemove={(e) => handleCursor(e)}></svelte:body>
 
 <section class="grid-cols-1 grid md:grid-cols-4 flex-grow gap-5">
-	<div class="select-none" id="title">
+	<div class="select-none sticky top-6" id="title">
 		<h2 class="title">La Galería</h2>
 		<p class="text-sm opacity-50 font-sans">
 			estos son algunos de mis renders y dibujos. hacé click en alguno y comentá algo!
@@ -85,10 +66,6 @@
 				</a>
 			{/each}
 		{/await}
-		{#if data.error}
-			<h1 class="font-bold text-amber-400 text-3xl">Hubo un error!</h1>
-			<p>{data.error}</p>
-		{/if}
 	</div>
 </section>
 

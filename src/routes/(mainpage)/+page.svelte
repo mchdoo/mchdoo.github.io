@@ -48,7 +48,7 @@
 	<img src="/logo.svg" class="invert" alt="Pedro Machado" />
 	{#if pageLoaded}
 		<img
-			transition:scale={{delay: 200}}
+			transition:scale={{ delay: 200 }}
 			class="md:absolute right-16 top-10 animate-spin-slow w-full md:w-auto md:h-2/5 xl:h-1/2"
 			src="/gradient-star.png"
 			alt="gradient star"
@@ -61,11 +61,7 @@
 	</div>
 
 	{#if w < MOBILE_SCREEN}
-		<a
-			href="/galeria"
-			data-sveltekit-preload-data="hover"
-			class="button w-full py-5">Ir a Galería →</a
-		>
+		<a href="/galeria" class="button w-full py-5">Ir a Galería →</a>
 		<button
 			on:click={() => {
 				let link = links.pop()?.link;
@@ -80,6 +76,7 @@
 	<section class="hidden md:grid grid-cols-2 md:grid-cols-4 gap-10 mt-10">
 		{#each links as link}
 			<a
+				data-sveltekit-preload-data="hover"
 				href={link.link}
 				target={link.targetBlank ? '_blank' : ''}
 				rel="noreferrer"

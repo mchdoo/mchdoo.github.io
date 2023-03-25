@@ -1,7 +1,7 @@
 import { supabase } from '$lib/supabaseClient';
-import type { FileObject } from 'node_modules/@supabase/storage-js/dist/module';
+import type { PageServerLoadEvent } from './$types';
 
-export async function load({}) {
+export async function load({}: PageServerLoadEvent) {
 	const { data } = await supabase.storage.from('renders').list('public');
 
 	type Render = {

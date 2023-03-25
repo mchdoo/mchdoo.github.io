@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 
 	import Navbar from '$lib/components/Navbar.svelte';
 	import MenuIcon from '$lib/components/MenuIcon.svelte';
@@ -11,22 +10,13 @@
 {#if opened}
 	<Navbar />
 {/if}
-<main class="w-5/6 max-w-[1080px] mx-auto">
+<main class="w-5/6 max-w-[1080px] mx-auto pb-12">
 	<nav class="justify-between w-full items-center md:items-center inline-flex my-10">
 		<GoBack mode="duotone" />
 
 		<a href="/" class="opacity-50 hover:opacity-75 transition-opacity">
 			<img src="/iso.svg" class="invert h-10" alt="PM" />
 		</a>
-		<!-- {#if !$page.data.name}
-			<a href="/" class="opacity-50 hover:opacity-75 transition-opacity">
-				<img src="/iso.svg" class="invert h-10" alt="PM" />
-			</a>
-		{:else}
-			<p class="font-bold text-3xl">
-				{$page.data.name ?? ''}
-			</p>
-		{/if} -->
 		<MenuIcon onClick={() => (opened = !opened)} active={opened} />
 	</nav>
 	<slot />

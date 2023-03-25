@@ -5,34 +5,35 @@
 	import { page } from '$app/stores';
 	import { commentStore, prueba } from './store';
 	import type { PageData } from './$types';
+	import Popup from '$lib/components/Popup.svelte';
+	import { slide } from 'svelte/transition';
 
+	let isOpen = false;
 	export let data: PageData;
 
 	const name = data.name.split('_')[0];
 
-	let comment: string;
-
+	let contenidoComentario: string;
+	let autor: string;
 
 	async function handleComment() {
-		const comentario: TipoComentario = {
-			contenido: comment,
-			render: data.name,
-			autor: 'pedro',
-			created_at: new Date('today')
-		};
-
-		const { error } = await supabase.from('comentarios').insert(comentario);
-
-		if (error) {
-			alert(error.message);
+		if (autor == undefined) {
+			isOpen = true
+		} else {
+			const comentario: TipoComentario = {
+				contenido: contenidoComentario,
+				render: data.name,
+				autor: autor,
+				created_at: new Date('today')
+			};
+			isOpen = false;
+			contenidoComentario = '';
+			
+			const { error } = await supabase.from('comentarios').insert(comentario);
 		}
-
-		comment = "";
 	}
 
-	prueba.set('Cargado')
-
-
+	prueba.set('Cargado');
 </script>
 
 <svelte:head>
@@ -40,10 +41,9 @@
 </svelte:head>
 
 <main class="grid grid-cols-3 gap-5">
-
 	<section class="col-span-3 md:col-span-2">
 		{#if !$page.error}
-			<img class="render" src={data.render.publicUrl} alt={data.name} />
+			<img class="render sticky top-6" src={data.render.publicUrl} alt={data.name} />
 		{/if}
 	</section>
 	<!-- <div class="h-10 aspect-square bg-[{swatches[1].getHex()}]" ></div> -->
@@ -63,30 +63,54 @@
 				{#each $commentStore as comentario}
 					<Comentario {comentario} />
 				{/each}
-				{#if !$commentStore}
-					<p class="text-center text-foreground opacity-20">nadie comentó todavía</p>
+				{#if $commentStore.length === 0}
+					<p transition:slide={{duration: 200}} class="text-center text-foreground opacity-20">nadie comentó todavía</p>
 				{/if}
 			</section>
 
-			<span class="relative">
+			<form class="relative" on:submit|preventDefault={() => (isOpen = true)}>
 				<textarea
-					bind:value={comment}
+					required
+					bind:value={contenidoComentario}
 					on:submit={() => handleComment()}
 					on:keydown={(e) => {
-						e.key == 'return' ? () => handleComment() : null;
+						if (e.key === 'Enter' && !e.shiftKey) {
+							e.preventDefault()
+							handleComment()
+						}
 					}}
-					placeholder="algo para decir?"
-					class="rounded p-3 h-fit placeholder:text-foreground/20 transition focus:ring-2 text-foreground/80 resize-y ring-foreground/30 outline-none bg-foreground/5 w-full"
+					style="transition: margin 200ms ease-out;"
+					placeholder={$commentStore.length === 0 ? "Sé el primer comentario!" : "Algo para decir?"}
+					class="resize-y break-words rounded p-3 placeholder:text-foreground/20 transition focus:ring-2 text-foreground/80 ring-foreground/30 outline-none bg-foreground/5 w-full"
 				/>
 				<button
-					on:click={() => handleComment()}
-					class="absolute right-2 mt-2 bg-foreground/10 h-10 aspect-square rounded-full hover:bg-foreground/20 backdrop-blur-sm"
+					type="submit"
+					class="absolute bottom-4 right-2 bg-foreground/10 h-9 aspect-square rounded-full hover:bg-foreground/20 backdrop-blur-sm"
 				>
 					→
 				</button>
-			</span>
+			</form>
 		</div>
 	</section>
+
+	<Popup {isOpen} onClose={() => (isOpen = false)}>
+		<h3 class="font-bold text-3xl mb-3">Antes de comentar</h3>
+		<hr class="opacity-10 mb-3" />
+		<form on:submit={() => handleComment()}>
+			<label for="name" class="font-sans text-xs opacity-50 uppercase">Tu nombre</label>
+			<input
+				bind:value={autor}
+				required
+				autofocus
+				autocomplete="off"
+				name="name"
+				placeholder="Leonel Messi"
+				class="font-sans rounded p-3 h-fit placeholder:text-foreground/20 transition focus:ring-2 text-foreground/80 resize-y ring-foreground/30 outline-none bg-foreground/5 w-full"
+				type="text"
+			/>
+			<button type="submit" class="button float-right mt-3"> Comentar </button>
+		</form>
+	</Popup>
 </main>
 
 <style lang="postcss" scoped>

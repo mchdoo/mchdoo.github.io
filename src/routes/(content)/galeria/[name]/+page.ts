@@ -4,8 +4,6 @@ import type { RealtimeChannel } from 'node_modules/@supabase/realtime-js/dist/mo
 import { onDestroy, onMount, setContext } from 'svelte';
 import { commentStore, prueba } from './store';
 
-export const ssr = true;
-
 export async function load({ params }: any) {
 	// Render
 	const render = await supabase.storage.from('renders/public').getPublicUrl(params.name).data;
@@ -30,8 +28,7 @@ export async function load({ params }: any) {
 			(payload) => {
 				console.log('Change received!', payload);
 				commentStore.update(
-					(oldComs) =>
-						(oldComs = oldComs.splice(oldComs.findIndex((obj) => obj.id === payload.old.id)))
+					(oldComs) => (oldComs = oldComs.filter((com) => com.id !== payload.old.id))
 				);
 			}
 		)
