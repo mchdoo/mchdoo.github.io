@@ -26,7 +26,7 @@
 				contenido: contenidoComentario,
 				render: data.name,
 				autor: autor,
-				created_at: new Date('today')
+				created_at: new Date()
 			};
 			isOpen = false;
 			contenidoComentario = '';
@@ -79,7 +79,7 @@
 						}
 					}}
 					style="transition: margin 200ms ease-out;"
-					placeholder={$commentStore.length === 0 ? "Sé el primer comentario!" : "Algo para decir?"}
+					placeholder={$commentStore.length === 0 ? "Sos el primer comentario!" : "Algo para decir?"}
 					class="resize-y break-words rounded p-3 placeholder:text-foreground/20 transition focus:ring-2 text-foreground/80 ring-foreground/30 outline-none bg-foreground/5 w-full"
 				/>
 				<button

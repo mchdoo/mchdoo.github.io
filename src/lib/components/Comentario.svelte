@@ -3,7 +3,7 @@
 	import { supabase } from '$lib/supabaseClient';
 	import type { TipoComentario } from '$lib/types';
 	import { cubicOut } from 'svelte/easing';
-	import { fly, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import Popup from './Popup.svelte';
 
 	export let autor: string;

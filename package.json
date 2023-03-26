@@ -34,12 +34,12 @@
   "dependencies": {
     "@supabase/auth-helpers-sveltekit": "^0.8.6",
     "@supabase/supabase-js": "^2.1.1",
-    "@sveltejs/adapter-vercel": "^1.0.5",
+    "@sveltejs/adapter-vercel": "^2.4.1",
     "@types/nprogress": "^0.2.0",
+    "date-fns": "^2.29.3",
     "gsap": "^3.11.3",
     "nprogress": "^0.2.0",
     "sharp": "^0.31.3",
-    "svelte-adapter-ghpages": "^0.0.2",
     "svelte-lazy-image": "^0.5.1"
   }
 }

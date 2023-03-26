@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition';
 	import { spring } from 'svelte/motion';
-	import { onMount } from 'svelte';
 	import type { PageServerData } from './$types';
 	export let data: PageServerData;
 	import { lazyLoad } from '$lib/utils/lazyLoad';

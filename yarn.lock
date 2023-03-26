@@ -467,15 +467,10 @@
   dependencies:
     import-meta-resolve "^2.2.0"
 
-"@sveltejs/adapter-static@^1.0.0-next.26":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-static/-/adapter-static-1.0.5.tgz#3c691b30717d73aa77f41409ed1ce1f2e3a52e48"
-  integrity sha512-W5jbgvy9sbYEHs27NQOSFEun+zQwdcL4kpk5qc2kSHl8cKsP5wfXuWDTDRmD1Co40aFcesi5Az5ZzdnPI8KCVg==
-
-"@sveltejs/adapter-vercel@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-vercel/-/adapter-vercel-1.0.5.tgz#613610229a07372fed0804658a6832448054fac1"
-  integrity sha512-TnFw+2ZwUuzguIeh013h0eiFmHylBuL1aV3jcUWbJmBLRo6YA0Ti8X8VXgFP4izP7XGuLKdpUIMg7HaZe21LbA==
+"@sveltejs/adapter-vercel@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@sveltejs/adapter-vercel/-/adapter-vercel-2.4.1.tgz#76818f0d92daa79f5ccbf9f226b0714ef514ab59"
+  integrity sha512-7YOHBq8onxqD5ZshQhveuSzJg9ZOicKoNZQtOnAj++0MJmPElxQ5Mjqp6aQfIhHAHl8tn5UbacCpvR39mPejgw==
   dependencies:
     "@vercel/nft" "^0.22.1"
     esbuild "^0.16.3"
@@ -928,6 +923,11 @@ d@1, d@^1.0.1:
   dependencies:
     es5-ext "^0.10.50"
     type "^1.0.1"
+
+date-fns@^2.29.3:
+  version "2.29.3"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.29.3.tgz#27402d2fc67eb442b511b70bbdf98e6411cd68a8"
+  integrity sha512-dDCnyH2WnnKusqvZZ6+jA1O51Ibt8ZMRNkDZdyAyK4YfbDwa/cEmuztzG5pk6hqlp9aSBPYcjOlktquahGwGeA==
 
 debug@4, debug@^4.1.0, debug@^4.3.4:
   version "4.3.4"
@@ -2246,13 +2246,6 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
-
-svelte-adapter-ghpages@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/svelte-adapter-ghpages/-/svelte-adapter-ghpages-0.0.2.tgz#9de67534224b1a536a5769c1121c83296383a1fb"
-  integrity sha512-nlDZ2XrKaNtd5CSNjcqGXrh3rMI+3xYTOR61zH/LGKhBbtCABCQOt+pLXiztLO6zpgZhbq03lUvFESgTMWD4dA==
-  dependencies:
-    "@sveltejs/adapter-static" "^1.0.0-next.26"
 
 svelte-check@^2.9.2:
   version "2.10.0"
